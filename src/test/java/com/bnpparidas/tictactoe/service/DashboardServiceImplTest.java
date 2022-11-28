@@ -32,7 +32,7 @@ public class DashboardServiceImplTest {
     }
 
     @Test
-    public void makeMovementSuccessfullyTest(){
+    public void makeMovement_SuccessfullMovementTest(){
 
         PositionDTO positionDTO = new PositionDTO();
         positionDTO.setRowPosition(1);
@@ -43,8 +43,7 @@ public class DashboardServiceImplTest {
         movementDTO.setPosition(positionDTO);
 
         dashboardService.resetDashboard();
-        boolean result = dashboardService.makeMovement(movementDTO);
-        Assertions.assertTrue(result);
+        dashboardService.makeMovement(movementDTO);
 
         Character value = dashboardService.getDashboard()[1][1];
 
@@ -52,7 +51,7 @@ public class DashboardServiceImplTest {
     }
 
     @Test
-    public void makeMovementUnSuccessfully_invalidPositionTest(){
+    public void makeMovement_invalidPositionTest(){
 
         dashboardService.resetDashboard();
 
@@ -74,7 +73,7 @@ public class DashboardServiceImplTest {
 
 
     @Test
-    public void makeMovementUnSuccessfully_MatrizNullTest(){
+    public void makeMovement_MatrizNullTest(){
 
         PositionDTO positionDTO = new PositionDTO();
         positionDTO.setRowPosition(2);

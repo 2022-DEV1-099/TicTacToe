@@ -6,7 +6,7 @@ public interface DashboardService {
 
     public void resetDashboard();
 
-    public boolean makeMovement(MovementDTO movementDTO);
+    public void makeMovement(MovementDTO movementDTO);
 
     public Character[][] getDashboard();
 

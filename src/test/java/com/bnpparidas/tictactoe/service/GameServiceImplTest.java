@@ -28,7 +28,7 @@ public class GameServiceImplTest {
     }
 
     @Test
-    public void startGame_successTest(){
+    public void startGame_successTest() throws TicTacException {
 
         PlayerDTO player1= new PlayerDTO();
         player1.setName("javier");
@@ -44,31 +44,37 @@ public class GameServiceImplTest {
     }
 
     @Test
-    public void startGame_player1NullTest(){
+    public void startGame_player1NullTest() {
 
         PlayerDTO player2= new PlayerDTO();
         player2.setName("natalia");
         player2.setSimbol('O');
 
-        gameService.startGame(null,player2);
+        Exception exception = assertThrows(TicTacException.class, () -> {
+            gameService.startGame(null,player2);
+        });
 
+        Assertions.assertNotNull(exception);
         Assertions.assertFalse(gameService.hasGameStarted());
     }
 
     @Test
-    public void startGame_player2NullTest(){
+    public void startGame_player2NullTest() throws TicTacException {
 
         PlayerDTO player1= new PlayerDTO();
         player1.setName("natalia");
         player1.setSimbol('O');
 
-        gameService.startGame(player1,null);
+        Exception exception = assertThrows(TicTacException.class, () -> {
+            gameService.startGame(player1,null);
+        });
 
+        Assertions.assertNotNull(exception);
         Assertions.assertFalse(gameService.hasGameStarted());
     }
 
     @Test
-    public void startGame_player1NotSymbolTest(){
+    public void startGame_player1NotSymbolTest() throws TicTacException {
 
         PlayerDTO player1= new PlayerDTO();
         player1.setName("javier");
@@ -77,8 +83,29 @@ public class GameServiceImplTest {
         player2.setName("natalia");
         player2.setSimbol('O');
 
-        gameService.startGame(player1,player2);
+        Exception exception = assertThrows(TicTacException.class, () -> {
+            gameService.startGame(player1,player2);
+        });
 
+        Assertions.assertNotNull(exception);
+        Assertions.assertFalse(gameService.hasGameStarted());
+    }
+
+    @Test
+    public void startGame_player2NotSymbolTest() throws TicTacException {
+
+        PlayerDTO player1= new PlayerDTO();
+        player1.setName("javier");
+        player1.setSimbol('O');
+
+        PlayerDTO player2= new PlayerDTO();
+        player2.setName("natalia");
+
+        Exception exception = assertThrows(TicTacException.class, () -> {
+            gameService.startGame(player1,player2);
+        });
+
+        Assertions.assertNotNull(exception);
         Assertions.assertFalse(gameService.hasGameStarted());
     }
 
@@ -93,10 +120,9 @@ public class GameServiceImplTest {
         movementDTO.setSimbol('X');
         movementDTO.setPosition(position);
 
-
-
         PlayerDTO player1= new PlayerDTO();
         player1.setName("javier");
+        player1.setSimbol('X');
 
         PlayerDTO player2= new PlayerDTO();
         player2.setName("natalia");
@@ -105,7 +131,7 @@ public class GameServiceImplTest {
         gameService.startGame(player1,player2);
 
         boolean result = gameService.makeMovement(movementDTO);
-        Assertions.assertTrue(result);
+        Assertions.assertFalse(result);
     }
 
     @Test
@@ -119,8 +145,12 @@ public class GameServiceImplTest {
         movementDTO.setSimbol('X');
         movementDTO.setPosition(position);
 
-        boolean result = gameService.makeMovement(movementDTO);
-        Assertions.assertTrue(result);
+        Exception exception = assertThrows(TicTacException.class, () -> {
+            gameService.makeMovement(movementDTO);
+        });
+
+        Assertions.assertNotNull(exception);
+        Assertions.assertFalse(gameService.hasGameStarted());
     }
 
     @Test
@@ -137,6 +167,7 @@ public class GameServiceImplTest {
 
         PlayerDTO player1= new PlayerDTO();
         player1.setName("javier");
+        player1.setSimbol('X');
 
         PlayerDTO player2= new PlayerDTO();
         player2.setName("natalia");
@@ -160,12 +191,12 @@ public class GameServiceImplTest {
         position.setColPosition(10);
 
         MovementDTO movementDTO = new MovementDTO();
-        movementDTO.setSimbol('T');
+        movementDTO.setSimbol('X');
         movementDTO.setPosition(position);
-
 
         PlayerDTO player1= new PlayerDTO();
         player1.setName("javier");
+        player1.setSimbol('X');
 
         PlayerDTO player2= new PlayerDTO();
         player2.setName("natalia");
