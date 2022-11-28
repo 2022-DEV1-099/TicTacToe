@@ -7,6 +7,8 @@ public class GameDTO {
 
     private PlayerDTO player1DTO;
 
+    private PlayerDTO player2DTO;
+
     public PlayerDTO getPlayer2DTO() {
         return player2DTO;
     }
@@ -14,8 +16,6 @@ public class GameDTO {
     public void setPlayer2DTO(PlayerDTO player2DTO) {
         this.player2DTO = player2DTO;
     }
-
-    private PlayerDTO player2DTO;
 
     public PlayerDTO getPlayer1DTO() {
         return player1DTO;
