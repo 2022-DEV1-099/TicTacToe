@@ -3,6 +3,7 @@ package com.bnpparidas.tictactoe.controller;
 
 import com.bnpparidas.tictactoe.dto.ErrorResponseDTO;
 import com.bnpparidas.tictactoe.dto.GameDTO;
+import com.bnpparidas.tictactoe.dto.ResponseGameDTO;
 import com.bnpparidas.tictactoe.service.GameService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,8 @@ public class GameController {
     @PostMapping("/startGame")
     public ResponseEntity startGame(@RequestBody GameDTO gameDTO) {
 
-        log.info("m=startGame:"+gameDTO);
+        log.info("m=startGame, player1:{} , symbol1:{}, player2:{}, symbol1:{}", gameDTO.getPlayer1DTO().getName(),
+        gameDTO.getPlayer1DTO().getSimbol(),gameDTO.getPlayer2DTO().getName(),gameDTO.getPlayer2DTO().getSimbol());
 
         if(!validGameRequest(gameDTO)){
             ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO("Input values are not valid");
@@ -32,8 +34,9 @@ public class GameController {
         }
 
         try{
-            gameService.startGame(gameDTO.getPlayer1DTO(), gameDTO.getPlayer2DTO());
-            return ResponseEntity.status(HttpStatus.OK).body("Game successfully Started");
+            ResponseGameDTO responseGameDTO = gameService.startGame(gameDTO.getPlayer1DTO(),
+                    gameDTO.getPlayer2DTO());
+            return ResponseEntity.status(HttpStatus.OK).body(responseGameDTO);
         }catch (Exception e){
             ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDTO);

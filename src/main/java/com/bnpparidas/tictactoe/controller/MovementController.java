@@ -2,6 +2,7 @@ package com.bnpparidas.tictactoe.controller;
 
 import com.bnpparidas.tictactoe.dto.ErrorResponseDTO;
 import com.bnpparidas.tictactoe.dto.MovementDTO;
+import com.bnpparidas.tictactoe.dto.MovementResponseDTO;
 import com.bnpparidas.tictactoe.service.GameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,12 +35,8 @@ public class MovementController {
         }
 
         try{
-            boolean isWinner = gameService.makeMovement(movementDTO);
-            if(isWinner){
-                return ResponseEntity.status(HttpStatus.OK).body("You are the Winner,Game Finished!!");
-            }else{
-                return ResponseEntity.status(HttpStatus.OK).body("Movement successfully Done");
-            }
+            MovementResponseDTO movementResponseDTO = gameService.makeMovement(movementDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(movementResponseDTO);
         }catch(Exception e){
             ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDTO);

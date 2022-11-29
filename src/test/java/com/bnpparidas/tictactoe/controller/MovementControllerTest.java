@@ -1,6 +1,7 @@
 package com.bnpparidas.tictactoe.controller;
 
 import com.bnpparidas.tictactoe.dto.MovementDTO;
+import com.bnpparidas.tictactoe.dto.MovementResponseDTO;
 import com.bnpparidas.tictactoe.dto.PositionDTO;
 import com.bnpparidas.tictactoe.exception.TicTacException;
 import com.bnpparidas.tictactoe.service.GameService;
@@ -36,7 +37,18 @@ public class MovementControllerTest {
 
         movementDTO.setPosition(positionDTO);
 
-        when(gameService.makeMovement(movementDTO)).thenReturn(true);
+
+        Character[][]dashboard = new Character[][]{
+                {'_', '_', '_'},
+                {'_', '_', '_'},
+                {'_', '_', '_'}
+        };
+        MovementResponseDTO movementResponseDTO = new MovementResponseDTO();
+        movementResponseDTO.setDashboard(dashboard);
+        movementResponseDTO.setWinner(false);
+        movementResponseDTO.setMessage("Game Continues!!");
+
+        when(gameService.makeMovement(movementDTO)).thenReturn(movementResponseDTO);
 
         ResponseEntity responseEntity=movementController.play(movementDTO);
 

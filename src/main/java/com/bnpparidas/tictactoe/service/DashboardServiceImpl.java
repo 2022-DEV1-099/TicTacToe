@@ -36,7 +36,7 @@ public class DashboardServiceImpl implements DashboardService{
         dashboard[row][col] = movementDTO.getSimbol();
     }
 
-    public boolean isPositionAvailable(MovementDTO movementDTO){
+    public Boolean isPositionAvailable(MovementDTO movementDTO){
         PositionDTO position = movementDTO.getPosition();
         if((dashboard[position.getRowPosition()][position.getColPosition()]).equals('_')){
             return true;

@@ -1,7 +1,9 @@
 package com.bnpparidas.tictactoe.service;
 
 import com.bnpparidas.tictactoe.dto.MovementDTO;
+import com.bnpparidas.tictactoe.dto.MovementResponseDTO;
 import com.bnpparidas.tictactoe.dto.PlayerDTO;
+import com.bnpparidas.tictactoe.dto.ResponseGameDTO;
 import com.bnpparidas.tictactoe.exception.TicTacException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,16 +19,14 @@ public class GameServiceImpl implements GameService{
 
     private PlayerDTO player1;
     private PlayerDTO player2;
-
     private DashboardService dashboarService;
-
     private Character lastPlayer;
 
     public GameServiceImpl(DashboardServiceImpl dashboardService){
         this.dashboarService = dashboardService;
     }
 
-    public void startGame(PlayerDTO player1,PlayerDTO player2) throws TicTacException {
+    public ResponseGameDTO startGame(PlayerDTO player1, PlayerDTO player2) throws TicTacException {
 
         if(!validStartGameRequest(player1, player2)){
             throw new TicTacException("Input Data is not Valid");
@@ -35,33 +35,15 @@ public class GameServiceImpl implements GameService{
         this.player2= player2;
         this.dashboarService.resetDashboard();
         this.lastPlayer='O';
+        ResponseGameDTO responseGameDTO = new ResponseGameDTO();
+        responseGameDTO.setDashboard(dashboarService.getDashboard());
+        responseGameDTO.setMessage("Game has started Successfully");
+        return responseGameDTO;
     }
 
-    private Boolean validStartGameRequest(PlayerDTO player1, PlayerDTO player2) {
+    public MovementResponseDTO makeMovement(MovementDTO movementDTO) throws TicTacException {
 
-        if(player1==null || player2==null){
-            return false;
-        }
-
-        if(player1.getSimbol()==null || player2.getSimbol()==null){
-            return false;
-        }
-
-        if(player1.getSimbol().equals(player2.getSimbol())){
-            return false;
-        }
-
-        if(player1.getSimbol().equals('O') && player2.getSimbol().equals('X')){
-            return true;
-        }
-
-        if(player1.getSimbol().equals('X') && player2.getSimbol().equals('O')){
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean makeMovement(MovementDTO movementDTO) throws TicTacException {
+        MovementResponseDTO movementResponseDTO = new MovementResponseDTO();
 
         if(!hasGameStarted()){
             throw new TicTacException("Invalid Movement Game didnt Start");
@@ -81,10 +63,24 @@ public class GameServiceImpl implements GameService{
         if(dashboarService.isPositionAvailable(movementDTO)){
             this.dashboarService.makeMovement(movementDTO);
             lastPlayer=movementDTO.getSimbol();
-            return isWinner(movementDTO.getSimbol());
+            movementResponseDTO.setDashboard(dashboarService.getDashboard());
+            movementResponseDTO.setWinner(isWinner(movementDTO.getSimbol()));
+            if(movementResponseDTO.getWinner()){
+                 movementResponseDTO.setMessage("You are the Winner,Game Finished!!");
+            }else{
+                movementResponseDTO.setMessage("Game Continues!!");
+            }
+            return movementResponseDTO;
         }else{
             throw  new TicTacException("Position is not Available");
         }
+    }
+
+    public boolean hasGameStarted(){
+        if(player1==null && player2==null){
+            return false;
+        }
+        return true;
     }
 
     private boolean hasGameFinished() {
@@ -127,11 +123,29 @@ public class GameServiceImpl implements GameService{
         return false;
     }
 
-    public boolean hasGameStarted(){
-        if(player1==null && player2==null){
+
+    private Boolean validStartGameRequest(PlayerDTO player1, PlayerDTO player2) {
+
+        if(player1==null || player2==null){
             return false;
         }
-        return true;
+
+        if(player1.getSimbol()==null || player2.getSimbol()==null){
+            return false;
+        }
+
+        if(player1.getSimbol().equals(player2.getSimbol())){
+            return false;
+        }
+
+        if(player1.getSimbol().equals('O') && player2.getSimbol().equals('X')){
+            return true;
+        }
+
+        if(player1.getSimbol().equals('X') && player2.getSimbol().equals('O')){
+            return true;
+        }
+        return false;
     }
 
     private boolean validMovementRequest(MovementDTO movementDTO) {

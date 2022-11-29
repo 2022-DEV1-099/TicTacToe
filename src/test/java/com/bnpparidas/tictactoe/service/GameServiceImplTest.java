@@ -111,8 +111,7 @@ public class GameServiceImplTest {
         movementDTO.setSimbol('X');
         movementDTO.setPosition(position);
 
-        boolean result = gameService.makeMovement(movementDTO);
-        Assertions.assertFalse(result);
+         gameService.makeMovement(movementDTO);
     }
 
     @Test
@@ -235,7 +234,7 @@ public class GameServiceImplTest {
         MovementDTO firstMovement = new MovementDTO();
         firstMovement.setSimbol('X');
         firstMovement.setPosition(position);
-        Assertions.assertFalse(gameService.makeMovement(firstMovement));
+        Assertions.assertFalse(gameService.makeMovement(firstMovement).getWinner());
 
         PositionDTO secondPosition = new PositionDTO();
         secondPosition.setRowPosition(1);
@@ -243,7 +242,7 @@ public class GameServiceImplTest {
         MovementDTO secondMovement = new MovementDTO();
         secondMovement.setSimbol('O');
         secondMovement.setPosition(secondPosition);
-        Assertions.assertFalse(gameService.makeMovement(secondMovement));
+        Assertions.assertFalse(gameService.makeMovement(secondMovement).getWinner());
 
         PositionDTO thirdPosition = new PositionDTO();
         thirdPosition.setRowPosition(0);
@@ -251,7 +250,7 @@ public class GameServiceImplTest {
         MovementDTO thirdMovement = new MovementDTO();
         thirdMovement.setSimbol('X');
         thirdMovement.setPosition(thirdPosition);
-        Assertions.assertFalse(gameService.makeMovement(thirdMovement));
+        Assertions.assertFalse(gameService.makeMovement(thirdMovement).getWinner());
 
         PositionDTO foudPosition = new PositionDTO();
         foudPosition.setRowPosition(2);
@@ -259,7 +258,7 @@ public class GameServiceImplTest {
         MovementDTO fourMovement = new MovementDTO();
         fourMovement.setSimbol('O');
         fourMovement.setPosition(foudPosition);
-        Assertions.assertFalse(gameService.makeMovement(fourMovement));
+        Assertions.assertFalse(gameService.makeMovement(fourMovement).getWinner());
 
         PositionDTO fivePosition = new PositionDTO();
         fivePosition.setRowPosition(0);
@@ -267,7 +266,7 @@ public class GameServiceImplTest {
         MovementDTO fiveMovement = new MovementDTO();
         fiveMovement.setSimbol('X');
         fiveMovement.setPosition(fivePosition);
-        Assertions.assertTrue(gameService.makeMovement(fiveMovement));
+        Assertions.assertTrue(gameService.makeMovement(fiveMovement).getWinner());
     }
 
     @Test
@@ -280,7 +279,7 @@ public class GameServiceImplTest {
         MovementDTO firstMovement = new MovementDTO();
         firstMovement.setSimbol('X');
         firstMovement.setPosition(position);
-        Assertions.assertFalse(gameService.makeMovement(firstMovement));
+        Assertions.assertFalse(gameService.makeMovement(firstMovement).getWinner());
 
         PositionDTO secondPosition = new PositionDTO();
         secondPosition.setRowPosition(0);
@@ -288,7 +287,7 @@ public class GameServiceImplTest {
         MovementDTO secondMovement = new MovementDTO();
         secondMovement.setSimbol('O');
         secondMovement.setPosition(secondPosition);
-        Assertions.assertFalse(gameService.makeMovement(secondMovement));
+        Assertions.assertFalse(gameService.makeMovement(secondMovement).getWinner());
 
         PositionDTO thirdPosition = new PositionDTO();
         thirdPosition.setRowPosition(1);
@@ -296,7 +295,7 @@ public class GameServiceImplTest {
         MovementDTO thirdMovement = new MovementDTO();
         thirdMovement.setSimbol('X');
         thirdMovement.setPosition(thirdPosition);
-        Assertions.assertFalse(gameService.makeMovement(thirdMovement));
+        Assertions.assertFalse(gameService.makeMovement(thirdMovement).getWinner());
 
         PositionDTO foudPosition = new PositionDTO();
         foudPosition.setRowPosition(0);
@@ -304,7 +303,7 @@ public class GameServiceImplTest {
         MovementDTO fourMovement = new MovementDTO();
         fourMovement.setSimbol('O');
         fourMovement.setPosition(foudPosition);
-        Assertions.assertFalse(gameService.makeMovement(fourMovement));
+        Assertions.assertFalse(gameService.makeMovement(fourMovement).getWinner());
 
         PositionDTO fivePosition = new PositionDTO();
         fivePosition.setRowPosition(2);
@@ -312,7 +311,7 @@ public class GameServiceImplTest {
         MovementDTO fiveMovement = new MovementDTO();
         fiveMovement.setSimbol('X');
         fiveMovement.setPosition(fivePosition);
-        Assertions.assertTrue(gameService.makeMovement(fiveMovement));
+        Assertions.assertTrue(gameService.makeMovement(fiveMovement).getWinner());
     }
 
     @Test
@@ -325,7 +324,7 @@ public class GameServiceImplTest {
         MovementDTO firstMovement = new MovementDTO();
         firstMovement.setSimbol('X');
         firstMovement.setPosition(position);
-        Assertions.assertFalse(gameService.makeMovement(firstMovement));
+        Assertions.assertFalse(gameService.makeMovement(firstMovement).getWinner());
 
         PositionDTO secondPosition = new PositionDTO();
         secondPosition.setRowPosition(0);
@@ -333,7 +332,7 @@ public class GameServiceImplTest {
         MovementDTO secondMovement = new MovementDTO();
         secondMovement.setSimbol('O');
         secondMovement.setPosition(secondPosition);
-        Assertions.assertFalse(gameService.makeMovement(secondMovement));
+        Assertions.assertFalse(gameService.makeMovement(secondMovement).getWinner());
 
         PositionDTO thirdPosition = new PositionDTO();
         thirdPosition.setRowPosition(1);
@@ -341,7 +340,7 @@ public class GameServiceImplTest {
         MovementDTO thirdMovement = new MovementDTO();
         thirdMovement.setSimbol('X');
         thirdMovement.setPosition(thirdPosition);
-        Assertions.assertFalse(gameService.makeMovement(thirdMovement));
+        Assertions.assertFalse(gameService.makeMovement(thirdMovement).getWinner());
 
         PositionDTO foudPosition = new PositionDTO();
         foudPosition.setRowPosition(0);
@@ -349,7 +348,7 @@ public class GameServiceImplTest {
         MovementDTO fourMovement = new MovementDTO();
         fourMovement.setSimbol('O');
         fourMovement.setPosition(foudPosition);
-        Assertions.assertFalse(gameService.makeMovement(fourMovement));
+        Assertions.assertFalse(gameService.makeMovement(fourMovement).getWinner());
 
         PositionDTO fivePosition = new PositionDTO();
         fivePosition.setRowPosition(2);
@@ -357,7 +356,7 @@ public class GameServiceImplTest {
         MovementDTO fiveMovement = new MovementDTO();
         fiveMovement.setSimbol('X');
         fiveMovement.setPosition(fivePosition);
-        Assertions.assertTrue(gameService.makeMovement(fiveMovement));
+        Assertions.assertTrue(gameService.makeMovement(fiveMovement).getWinner());
     }
 
     private void startGame() throws TicTacException {
