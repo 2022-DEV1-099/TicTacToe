@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -60,27 +63,68 @@ public class GameServiceImpl implements GameService{
 
     public Boolean makeMovement(MovementDTO movementDTO) throws TicTacException {
 
-        Boolean isWinner= false;
-
         if(!hasGameStarted()){
             throw new TicTacException("Invalid Movement Game didnt Start");
+        }
+
+        if(hasGameFinished()){
+            throw new TicTacException("Game Has Already Finished!!!");
         }
 
         if(!validMovementRequest(movementDTO)){
             throw new TicTacException("Input Data is not Valid");
         }
 
-
         if(hasGameStarted() && dashboarService.getDashboard().length==0 && movementDTO.getSimbol().equals('O')){
             throw  new TicTacException("X move First");
         }
         if(dashboarService.isPositionAvailable(movementDTO)){
-             this.dashboarService.makeMovement(movementDTO);
-             lastPlayer=movementDTO.getSimbol();
-             return isWinner;
+            this.dashboarService.makeMovement(movementDTO);
+            lastPlayer=movementDTO.getSimbol();
+            return isWinner(movementDTO.getSimbol());
         }else{
             throw  new TicTacException("Position is not Available");
         }
+    }
+
+    private boolean hasGameFinished() {
+        return isWinner('X') || isWinner('O');
+    }
+
+    private  Boolean isWinner(Character symbol){
+        List<Character[]> rowList = Arrays.stream(this.dashboarService.getDashboard()).collect(Collectors.toList());
+        Predicate<Character[]> predicateRow = row->{
+            Boolean result2 = Arrays.stream(row).allMatch(x->x.equals(symbol));
+            return result2;
+        };
+        if(rowList.stream().anyMatch(predicateRow)){
+            return true;
+        }
+
+        List<Character> firstColumn = Arrays.stream(this.dashboarService.getDashboard()).map(x -> x[0]).collect(Collectors.toList());
+        List<Character> secondColumn = Arrays.stream(this.dashboarService.getDashboard()).map(x -> x[1]).collect(Collectors.toList());
+        List<Character> thridColum = Arrays.stream(this.dashboarService.getDashboard()).map(x -> x[2]).collect(Collectors.toList());
+
+        List<List<Character>> colList = Arrays.asList(firstColumn,secondColumn,thridColum);
+
+        Predicate<List<Character>> predicateCol = col->{
+            Boolean match = col.stream().allMatch(x->x.equals(symbol));
+            return match;
+        };
+
+        if(colList.stream().anyMatch(predicateCol)){
+            return true;
+        }
+
+        Character[][] dashboard = this.dashboarService.getDashboard();
+        if(dashboard[0][0].equals(dashboard[1][1]) && dashboard[1][1].equals(symbol)){
+            return dashboard[2][2].equals(symbol);
+        }
+
+        if(dashboard[0][2].equals(dashboard[1][1]) && dashboard[1][1].equals(symbol)){
+            return dashboard[2][0].equals(symbol);
+        }
+        return false;
     }
 
     public boolean hasGameStarted(){
@@ -89,7 +133,6 @@ public class GameServiceImpl implements GameService{
         }
         return true;
     }
-
 
     private boolean validMovementRequest(MovementDTO movementDTO) {
         if(!movementDTO.getSimbol().equals('X') && !movementDTO.getSimbol().equals('O')){
