@@ -63,7 +63,6 @@ public class DashboardServiceImplTest {
         movementDTO.setSimbol('X');
         movementDTO.setPosition(positionDTO);
 
-
         Exception exception = assertThrows(RuntimeException.class, () -> {
             dashboardService.makeMovement(movementDTO);
         });
