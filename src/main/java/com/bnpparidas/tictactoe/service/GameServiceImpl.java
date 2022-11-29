@@ -6,6 +6,8 @@ import com.bnpparidas.tictactoe.exception.TicTacException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Slf4j
 @Service
 public class GameServiceImpl implements GameService{
@@ -14,6 +16,8 @@ public class GameServiceImpl implements GameService{
     private PlayerDTO player2;
 
     private DashboardService dashboarService;
+
+    private Character lastPlayer;
 
     public GameServiceImpl(DashboardServiceImpl dashboardService){
         this.dashboarService = dashboardService;
@@ -27,6 +31,7 @@ public class GameServiceImpl implements GameService{
         this.player1= player1;
         this.player2= player2;
         this.dashboarService.resetDashboard();
+        this.lastPlayer='O';
     }
 
     private Boolean validStartGameRequest(PlayerDTO player1, PlayerDTO player2) {
@@ -56,19 +61,22 @@ public class GameServiceImpl implements GameService{
     public Boolean makeMovement(MovementDTO movementDTO) throws TicTacException {
 
         Boolean isWinner= false;
-        if(!validMovementRequest(movementDTO)){
-            throw new TicTacException("Input Data is not Valid");
-        }
 
         if(!hasGameStarted()){
             throw new TicTacException("Invalid Movement Game didnt Start");
         }
+
+        if(!validMovementRequest(movementDTO)){
+            throw new TicTacException("Input Data is not Valid");
+        }
+
 
         if(hasGameStarted() && dashboarService.getDashboard().length==0 && movementDTO.getSimbol().equals('O')){
             throw  new TicTacException("X move First");
         }
         if(dashboarService.isPositionAvailable(movementDTO)){
              this.dashboarService.makeMovement(movementDTO);
+             lastPlayer=movementDTO.getSimbol();
              return isWinner;
         }else{
             throw  new TicTacException("Position is not Available");
@@ -93,6 +101,14 @@ public class GameServiceImpl implements GameService{
         }
 
         if(movementDTO.getPosition().getRowPosition()>2 || movementDTO.getPosition().getRowPosition()<0 ){
+            return false;
+        }
+
+        if(this.dashboarService.isDashboardEmpty() && movementDTO.getSimbol().equals('O')){
+            return false;
+        }
+
+        if(this.lastPlayer.equals(movementDTO.getSimbol())){
             return false;
         }
         return true;

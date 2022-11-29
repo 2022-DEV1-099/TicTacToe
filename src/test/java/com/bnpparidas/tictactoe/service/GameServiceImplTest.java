@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -209,5 +207,69 @@ public class GameServiceImplTest {
         });
 
         Assertions.assertNotNull(exception);
+    }
+
+    @Test
+    public void makeMovement_invalidNovementFirstOTest() throws TicTacException {
+        PositionDTO position = new PositionDTO();
+        position.setRowPosition(10);
+        position.setColPosition(10);
+
+        MovementDTO movementDTO = new MovementDTO();
+        movementDTO.setSimbol('O');
+        movementDTO.setPosition(position);
+
+        PlayerDTO player1= new PlayerDTO();
+        player1.setName("javier");
+        player1.setSimbol('X');
+
+        PlayerDTO player2= new PlayerDTO();
+        player2.setName("natalia");
+        player2.setSimbol('O');
+
+        gameService.startGame(player1,player2);
+
+        Exception exception = assertThrows(TicTacException.class, () -> {
+            gameService.makeMovement(movementDTO);
+        });
+
+        Assertions.assertNotNull(exception);
+    }
+
+    @Test
+    public void makeMovement_invalidNovementTwoFollowedMovementTest() throws TicTacException {
+        PositionDTO position = new PositionDTO();
+        position.setRowPosition(1);
+        position.setColPosition(1);
+
+        MovementDTO firstMovement = new MovementDTO();
+        firstMovement.setSimbol('X');
+        firstMovement.setPosition(position);
+
+        PlayerDTO player1= new PlayerDTO();
+        player1.setName("javier");
+        player1.setSimbol('X');
+
+        PlayerDTO player2= new PlayerDTO();
+        player2.setName("natalia");
+        player2.setSimbol('O');
+
+        gameService.startGame(player1,player2);
+
+        gameService.makeMovement(firstMovement);
+
+        PositionDTO secondPosition = new PositionDTO();
+        secondPosition.setRowPosition(1);
+        secondPosition.setColPosition(0);
+
+        MovementDTO secondMovement = new MovementDTO();
+        secondMovement.setSimbol('X');
+        secondMovement.setPosition(secondPosition);
+
+        Exception exception = assertThrows(TicTacException.class, () -> {
+            gameService.makeMovement(secondMovement);
+        });
+        Assertions.assertNotNull(exception);
+
     }
 }

@@ -11,4 +11,6 @@ public interface DashboardService {
     public Character[][] getDashboard();
 
     public boolean isPositionAvailable(MovementDTO movementDTO);
+
+    public Boolean isDashboardEmpty();
 }
