@@ -102,7 +102,11 @@ ResponseBody
 ```
 
 ## Running The Project
-To run the project open a terminal and run the following sentence in the beginning of the directory(TicTacToe folder).
+To run the project open a terminal and run the following sentences in the beginning of the directory(TicTacToe folder).
 The project will run under the port 8080 and the address localhost.
 
+first run this command line, to build and download dependencies
 `mvn clean install`
+
+After that run the followin command to run the project 
+`mvn spring-boot:run`
