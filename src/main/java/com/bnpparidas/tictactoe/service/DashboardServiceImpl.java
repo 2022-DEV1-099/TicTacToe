@@ -50,15 +50,14 @@ public class DashboardServiceImpl implements DashboardService{
     }
 
     public Boolean isDashboardEmpty(){
-        List<Character[]> result = Arrays.stream(dashboard).collect(Collectors.toList());
+        List<Character[]> rowList = Arrays.stream(dashboard).collect(Collectors.toList());
 
         Predicate<Character[]> predicate = row->{
-            Boolean result2 = Arrays.stream(row).allMatch(x->x.equals('_'));
-            return result2;
+            Boolean result = Arrays.stream(row).allMatch(x->x.equals('_'));
+            return result;
         };
 
-        Boolean filters = result.stream().allMatch(predicate);
-        return  filters;
+        return rowList.stream().allMatch(predicate);
     }
 
 

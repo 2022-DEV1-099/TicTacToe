@@ -92,8 +92,8 @@ public class GameServiceImpl implements GameService{
         List<Character[]> rowList = Arrays.stream(dashboard).collect(Collectors.toList());
 
         Predicate<Character[]> predicateRow = row->{
-            Boolean result2 = Arrays.stream(row).anyMatch(x->x.equals('_'));
-            return result2;
+            Boolean result = Arrays.stream(row).anyMatch(x->x.equals('_'));
+            return result;
         };
 
         boolean result= rowList.stream().anyMatch(predicateRow);
@@ -118,8 +118,8 @@ public class GameServiceImpl implements GameService{
     private  Boolean isWinner(Character symbol){
         List<Character[]> rowList = Arrays.stream(this.dashboarService.getDashboard()).collect(Collectors.toList());
         Predicate<Character[]> predicateRow = row->{
-            Boolean result2 = Arrays.stream(row).allMatch(x->x.equals(symbol));
-            return result2;
+            Boolean result = Arrays.stream(row).allMatch(x->x.equals(symbol));
+            return result;
         };
         if(rowList.stream().anyMatch(predicateRow)){
             return true;
