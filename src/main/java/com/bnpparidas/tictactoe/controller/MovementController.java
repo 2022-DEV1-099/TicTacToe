@@ -1,5 +1,6 @@
 package com.bnpparidas.tictactoe.controller;
 
+import com.bnpparidas.tictactoe.util.MessagerHandler;
 import com.bnpparidas.tictactoe.dto.ErrorResponseDTO;
 import com.bnpparidas.tictactoe.dto.MovementDTO;
 import com.bnpparidas.tictactoe.dto.MovementResponseDTO;
@@ -20,17 +21,17 @@ public class MovementController {
 
     private GameService gameService;
 
-    public MovementController( GameService gameService){
+    private MessagerHandler messagerHandler;
+
+    public MovementController( GameService gameService,MessagerHandler messagerHandler){
         this.gameService=gameService;
+        this.messagerHandler =messagerHandler;
     }
     @PostMapping("/play")
     public ResponseEntity play(@RequestBody MovementDTO movementDTO) {
 
-        log.info("m=play, simbol:{} , colPosition:{}, rowPosition:{}", movementDTO.getSimbol(),
-                movementDTO.getPosition().getColPosition(), movementDTO.getPosition().getRowPosition());
-
         if(!validMovementRequest(movementDTO)){
-            ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO("Input values are not valid");
+            ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(messagerHandler.getIncorrectInput());
             errorResponseDTO.setDashboard(this.gameService.getDashboard());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDTO);
         }

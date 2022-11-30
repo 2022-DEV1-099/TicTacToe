@@ -1,5 +1,6 @@
 package com.bnpparidas.tictactoe.controller;
 
+import com.bnpparidas.tictactoe.util.MessagerHandler;
 import com.bnpparidas.tictactoe.dto.MovementDTO;
 import com.bnpparidas.tictactoe.dto.MovementResponseDTO;
 import com.bnpparidas.tictactoe.dto.PositionDTO;
@@ -24,6 +25,9 @@ public class MovementControllerTest {
 
     @Mock
     private GameService gameService;
+
+    @Mock
+    private MessagerHandler messagerHandler;
 
     @Test
     public void startMovementSuccessfullyTest() throws TicTacException {

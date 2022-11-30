@@ -1,5 +1,6 @@
 package com.bnpparidas.tictactoe.controller;
 
+import com.bnpparidas.tictactoe.util.MessagerHandler;
 import com.bnpparidas.tictactoe.dto.GameDTO;
 import com.bnpparidas.tictactoe.dto.PlayerDTO;
 import com.bnpparidas.tictactoe.service.GameService;
@@ -21,6 +22,8 @@ public class GameControllerTest {
     @Mock
     private GameService gameService;
 
+    @Mock
+    private MessagerHandler messagerHandler;
     @Test
     public void startGameSuccessfully(){
 

@@ -1,5 +1,6 @@
 package com.bnpparidas.tictactoe.service;
 
+import com.bnpparidas.tictactoe.util.MessagerHandler;
 import com.bnpparidas.tictactoe.dto.MovementDTO;
 import com.bnpparidas.tictactoe.dto.MovementResponseDTO;
 import com.bnpparidas.tictactoe.dto.PlayerDTO;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -19,10 +21,13 @@ public class GameServiceImplTest {
 
     private DashboardServiceImpl dashboardService;
 
+    @Mock
+    private MessagerHandler messagerHandler;
+
     @BeforeEach
     void init() {
         dashboardService = new DashboardServiceImpl();
-        gameService = new GameServiceImpl(dashboardService);
+        gameService = new GameServiceImpl(dashboardService,messagerHandler);
     }
 
     @Test

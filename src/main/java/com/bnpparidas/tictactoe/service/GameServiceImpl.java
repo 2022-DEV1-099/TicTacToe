@@ -1,5 +1,6 @@
 package com.bnpparidas.tictactoe.service;
 
+import com.bnpparidas.tictactoe.util.MessagerHandler;
 import com.bnpparidas.tictactoe.dto.MovementDTO;
 import com.bnpparidas.tictactoe.dto.MovementResponseDTO;
 import com.bnpparidas.tictactoe.dto.PlayerDTO;
@@ -22,14 +23,17 @@ public class GameServiceImpl implements GameService{
     private DashboardService dashboarService;
     private Character lastPlayer;
 
-    public GameServiceImpl(DashboardServiceImpl dashboardService){
+    private MessagerHandler messagerHandler;
+
+    public GameServiceImpl(DashboardServiceImpl dashboardService,MessagerHandler messagerHandler){
         this.dashboarService = dashboardService;
+        this.messagerHandler= messagerHandler;
     }
 
     public ResponseGameDTO startGame(PlayerDTO player1, PlayerDTO player2) throws TicTacException {
 
         if(!validStartGameRequest(player1, player2)){
-            throw new TicTacException("Input Data is not Valid");
+            throw new TicTacException(messagerHandler.getIncorrectInput());
         }
         this.player1= player1;
         this.player2= player2;
@@ -37,7 +41,7 @@ public class GameServiceImpl implements GameService{
         this.lastPlayer='O';
         ResponseGameDTO responseGameDTO = new ResponseGameDTO();
         responseGameDTO.setDashboard(dashboarService.getDashboard());
-        responseGameDTO.setMessage("Game has started Successfully");
+        responseGameDTO.setMessage(messagerHandler.getGameStarted());
         return responseGameDTO;
     }
 
@@ -46,19 +50,19 @@ public class GameServiceImpl implements GameService{
         MovementResponseDTO movementResponseDTO = new MovementResponseDTO();
 
         if(!hasGameStarted()){
-            throw new TicTacException("Invalid Movement Game didnt Start");
+            throw new TicTacException(messagerHandler.getGameNotStarted());
         }
 
         if(hasGameFinished()){
-            throw new TicTacException("Game Has Already Finished!!!");
+            throw new TicTacException(messagerHandler.getGameFinished());
         }
 
         if(!validMovementRequest(movementDTO)){
-            throw new TicTacException("Input Data is not Valid");
+            throw new TicTacException(messagerHandler.getIncorrectInput());
         }
 
         if(hasGameStarted() && dashboarService.getDashboard().length==0 && movementDTO.getSimbol().equals('O')){
-            throw  new TicTacException("X move First");
+            throw  new TicTacException(this.messagerHandler.getStartError());
         }
 
         if(dashboarService.isPositionAvailable(movementDTO)){
@@ -67,18 +71,18 @@ public class GameServiceImpl implements GameService{
             movementResponseDTO.setDashboard(dashboarService.getDashboard());
             movementResponseDTO.setWinner(isWinner(movementDTO.getSimbol()));
             if(movementResponseDTO.getWinner()){
-                 movementResponseDTO.setMessage("You are the Winner,Game Finished!!");
+                 movementResponseDTO.setMessage(messagerHandler.getWinnerMessage());
             }else{
 
                 if(!movementResponseDTO.getWinner() && dashboardCompleted()){
-                    movementResponseDTO.setMessage("Game Draw!!; restart the Game");
+                    movementResponseDTO.setMessage(messagerHandler.getDrawMessage());
                 }else{
-                    movementResponseDTO.setMessage("Game Continues!!");
+                    movementResponseDTO.setMessage(messagerHandler.getGameContinue());
                 }
             }
             return movementResponseDTO;
         }else{
-            throw  new TicTacException("Position is not Available");
+            throw  new TicTacException(messagerHandler.getPositionNotAvailable());
         }
     }
 
