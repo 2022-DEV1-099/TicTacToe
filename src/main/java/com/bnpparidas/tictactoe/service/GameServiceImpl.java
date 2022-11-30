@@ -60,6 +60,7 @@ public class GameServiceImpl implements GameService{
         if(hasGameStarted() && dashboarService.getDashboard().length==0 && movementDTO.getSimbol().equals('O')){
             throw  new TicTacException("X move First");
         }
+
         if(dashboarService.isPositionAvailable(movementDTO)){
             this.dashboarService.makeMovement(movementDTO);
             lastPlayer=movementDTO.getSimbol();
@@ -68,12 +69,31 @@ public class GameServiceImpl implements GameService{
             if(movementResponseDTO.getWinner()){
                  movementResponseDTO.setMessage("You are the Winner,Game Finished!!");
             }else{
-                movementResponseDTO.setMessage("Game Continues!!");
+
+                if(!movementResponseDTO.getWinner() && dashboardCompleted()){
+                    movementResponseDTO.setMessage("Game Draw!!; restart the Game");
+                }else{
+                    movementResponseDTO.setMessage("Game Continues!!");
+                }
             }
             return movementResponseDTO;
         }else{
             throw  new TicTacException("Position is not Available");
         }
+    }
+
+    private boolean dashboardCompleted() {
+        Character[][] dashboard = this.dashboarService.getDashboard();
+
+        List<Character[]> rowList = Arrays.stream(dashboard).collect(Collectors.toList());
+
+        Predicate<Character[]> predicateRow = row->{
+            Boolean result2 = Arrays.stream(row).anyMatch(x->x.equals('_'));
+            return result2;
+        };
+
+        boolean result= rowList.stream().anyMatch(predicateRow);
+        return !result;
     }
 
     public boolean hasGameStarted(){
@@ -83,8 +103,12 @@ public class GameServiceImpl implements GameService{
         return true;
     }
 
+    public Character[][] getDashboard(){
+        return this.dashboarService.getDashboard();
+    }
+
     private boolean hasGameFinished() {
-        return isWinner('X') || isWinner('O');
+        return isWinner('X') || isWinner('O') || dashboardCompleted();
     }
 
     private  Boolean isWinner(Character symbol){

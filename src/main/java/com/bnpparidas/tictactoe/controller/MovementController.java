@@ -31,6 +31,7 @@ public class MovementController {
 
         if(!validMovementRequest(movementDTO)){
             ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO("Input values are not valid");
+            errorResponseDTO.setDashboard(this.gameService.getDashboard());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDTO);
         }
 
@@ -39,6 +40,7 @@ public class MovementController {
             return ResponseEntity.status(HttpStatus.OK).body(movementResponseDTO);
         }catch(Exception e){
             ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(e.getMessage());
+            errorResponseDTO.setDashboard(this.gameService.getDashboard());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDTO);
         }
     }

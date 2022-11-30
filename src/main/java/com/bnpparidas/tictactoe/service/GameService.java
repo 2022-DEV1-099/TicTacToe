@@ -14,4 +14,5 @@ public interface GameService {
 
     public boolean hasGameStarted();
 
+    Character[][] getDashboard();
 }
