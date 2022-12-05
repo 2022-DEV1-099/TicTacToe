@@ -16,6 +16,13 @@ The rules are described below :
 - If a player is able to draw three X’s or three O’s in a row, that player wins.
 - If all nine squares are filled and neither player has three in a row, the game is a draw.
 
+  ```  Note:
+  Helpful indices
+  [0][0] , [0][1] , [0][2]
+  [1][0] , [1][1] , [1][2]
+  [2][0] , [2][1] , [2][2]
+  ```
+
 ## Enpoints
 - POST http://localhost:8080/api/game/startGame
 In order to start the game this is the first endpoind to invoke, otherwise the game will not start. This can be used to reestart the game as well
